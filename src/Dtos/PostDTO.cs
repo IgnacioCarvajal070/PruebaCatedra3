@@ -10,6 +10,6 @@ namespace PruebaCatedra3.src.Dtos
         public string Title { get; set; } = string.Empty;
         public DateOnly date { get; set; }
         public string? ImageUrl { get; set; }
-        public string UserId { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
     }
 }

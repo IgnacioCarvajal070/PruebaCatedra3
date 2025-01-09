@@ -43,5 +43,13 @@ namespace PruebaCatedra3.src.Repository.Implements
             }
             return true;
         }
+        public async Task<string> getName(string id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null){
+                return "";
+            }
+            return user.Name;
+        }
     }
 }

@@ -12,12 +12,15 @@ namespace PruebaCatedra3.src.Services.Implements
     public class PostService : IPostService
     {
         private readonly IPostRepository _postRepository;
-        public PostService(IPostRepository postRepository)
+        private readonly IUserRepository _userRepository;
+        public PostService(IPostRepository postRepository, IUserRepository userRepository)
         {
             _postRepository = postRepository;
+            _userRepository = userRepository;
         }
         public async Task<PostDTO> CreatePost(PostCreateDTO postDTO, string userId)
         {
+            string nameUser = await _userRepository.getName(userId);
             var post = new Post
             {
                 Title = postDTO.Title,
@@ -31,7 +34,7 @@ namespace PruebaCatedra3.src.Services.Implements
                     Title = postCreate.Title,
                     ImageUrl = postCreate.ImageUrl,
                     date = postCreate.date,
-                    UserId = postCreate.UserId
+                    UserName = nameUser
                 };
         }
 
@@ -43,7 +46,7 @@ namespace PruebaCatedra3.src.Services.Implements
                 Title = post.Title,
                 ImageUrl = post.ImageUrl,
                 date = post.date,
-                UserId = post.UserId
+                UserName = _userRepository.getName(post.UserId).Result
             });
         }
     }
