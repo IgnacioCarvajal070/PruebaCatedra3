@@ -24,7 +24,7 @@ namespace PruebaCatedra3.src.Repository.Implements
             return true;
         }
 
-        public async Task<Post?> GetPost(string id)
+        public async Task<Post?> GetPost(int id)
         {
             return await _context.Posts.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
@@ -34,7 +34,7 @@ namespace PruebaCatedra3.src.Repository.Implements
             return await _context.Posts.ToListAsync();
         }
 
-        public async Task<bool> verifyPost(string id)
+        public async Task<bool> verifyPost(int id)
         {
             var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             if (post == null){

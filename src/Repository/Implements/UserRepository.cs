@@ -17,16 +17,16 @@ namespace PruebaCatedra3.src.Repository.Implements
             _context = context;
         }
 
-        public async Task<bool> CreateUser(User user)
+        public async Task<bool> CreateUser(User user, string password)
         {
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return true;
         }
-
         public async Task<User?> GetUser(string email)
         {
-            return await _context.Users.FindAsync(email);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task<IEnumerable<User>> GetUsers()

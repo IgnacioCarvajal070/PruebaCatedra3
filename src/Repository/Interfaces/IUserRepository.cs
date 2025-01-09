@@ -10,7 +10,7 @@ namespace PruebaCatedra3.src.Repository.Interfaces
     {
         Task<IEnumerable<User>> GetUsers();
         Task<User?> GetUser(string email);
-        Task<bool> CreateUser(User user);
+        Task<bool> CreateUser(User user, string password);
         Task<bool> verifyUser(string email);
     }
 }

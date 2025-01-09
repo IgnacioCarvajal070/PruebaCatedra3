@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PruebaCatedra3.src.Models;
 
 namespace PruebaCatedra3.src.Data
 {
-    public class ApplicationDBContext(DbContextOptions dbContextOptions) : DbContext(dbContextOptions)
+    public class ApplicationDBContext : IdentityDbContext<User>
     {
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
+
         public DbSet<Post> Posts { get; set; } = null!;
-        public DbSet<User> Users { get; set; } = null!;
     }
 }

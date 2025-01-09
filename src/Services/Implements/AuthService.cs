@@ -11,7 +11,6 @@ using PruebaCatedra3.src.Dtos;
 using PruebaCatedra3.src.Models;
 using PruebaCatedra3.src.Repository.Interfaces;
 using PruebaCatedra3.src.Services.Interfaces;
-using PruebaCatedra3.src.Mappers;
 
 namespace PruebaCatedra3.src.Services.Implements
 {
@@ -29,11 +28,11 @@ namespace PruebaCatedra3.src.Services.Implements
         {
             var claims = new List<Claim>
             {
-                new ("Id", user.Id.ToString()),
-                new ("Email", user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Email, user.Email),
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                    _configuration.GetSection("AppSettings:Token").Value!));
+            var tokenString = _configuration["AppSettings:Token"] ?? throw new ArgumentNullException("AppSettings:Token is not configured.");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenString));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var token = new JwtSecurityToken(
@@ -50,31 +49,38 @@ namespace PruebaCatedra3.src.Services.Implements
             if (user == null){
                 throw new Exception("Usuario no encontrado, verifique sus credenciales");
             }
-            var result = BCrypt.Net.BCrypt.Verify(userLoginForm.Password, user.Password);
+            var result = BCrypt.Net.BCrypt.Verify(userLoginForm.Password, user.PasswordHash);
             if (!result){
                 throw new Exception("Contraseña incorrecta");
             }
             var token = CreateToken(user);
-            var loggedUser = UserMapper.toDto(user);
             return new UserLoginDTO{
-                User = loggedUser,
+                User = new UserDTO{
+                    Id = user.Id,
+                    Email = user.Email,
+                    Name = user.Name
+                },
                 Token = token
             };
         }
 
         public async Task<UserLoginDTO> Register(UserRegisterDTO userRegisterDTO)
         {
-            var user = UserMapper.toModelFromRegister(userRegisterDTO);
-            if (_userRepository.verifyUser(user.Email).Result){
+            if (_userRepository.verifyUser(userRegisterDTO.Email).Result){
                 throw new Exception("El email ya esta en uso");
             }
-            var salt = BCrypt.Net.BCrypt.GenerateSalt(12);
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
-            await _userRepository.CreateUser(user);
+            var user = new User{
+                Email = userRegisterDTO.Email,
+                Name = userRegisterDTO.Name,
+            };
+            await _userRepository.CreateUser(user, userRegisterDTO.Password);
             var token = CreateToken(user);
-            var loggedUser = UserMapper.toDto(user);
             return new UserLoginDTO{
-                User = loggedUser,
+                User = new UserDTO{
+                    Id = user.Id,
+                    Email = user.Email,
+                    Name = user.Name
+                },
                 Token = token
             };
         }
