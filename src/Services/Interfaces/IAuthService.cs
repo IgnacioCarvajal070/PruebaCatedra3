@@ -8,7 +8,7 @@ namespace PruebaCatedra3.src.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<UserLoginDTO> Login(UserLoginDTO userLoginDTO);
-        Task<UserRegisterDTO> Register(UserRegisterDTO userRegisterDTO);
+        Task<UserLoginDTO> Login(UserLoginForm userLoginForm);
+        Task<UserLoginDTO> Register(UserRegisterDTO userRegisterDTO);
     }
 }

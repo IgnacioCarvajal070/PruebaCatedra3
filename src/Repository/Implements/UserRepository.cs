@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PruebaCatedra3.src.Data;
 using PruebaCatedra3.src.Models;
 using PruebaCatedra3.src.Repository.Interfaces;
@@ -28,14 +29,19 @@ namespace PruebaCatedra3.src.Repository.Implements
             return await _context.Users.FindAsync(email);
         }
 
-        public Task<IEnumerable<User>> GetUsers()
+        public async Task<IEnumerable<User>> GetUsers()
         {
-            throw new NotImplementedException();
+            var users = await _context.Users.ToListAsync();
+            return users;
         }
 
-        public Task<bool> verifyUser(string email)
+        public async Task<bool> verifyUser(string email)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            if (user == null){
+                return false;
+            }
+            return true;
         }
     }
 }
