@@ -17,30 +17,16 @@ namespace PruebaCatedra3.src.Repository.Implements
         {
             _context = context;
         }
-        public async Task<bool> CreatePost(Post post)
+        public async Task<Post> CreatePost(Post post)
         {
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<Post?> GetPost(int id)
-        {
-            return await _context.Posts.Where(x => x.Id == id).FirstOrDefaultAsync();
+            return post;
         }
 
         public async Task<IEnumerable<Post>> GetPosts()
         {
-            return await _context.Posts.ToListAsync();
-        }
-
-        public async Task<bool> verifyPost(int id)
-        {
-            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
-            if (post == null){
-                return false;
-            }
-            return true;
+            return await _context.Posts.Include(x => x.User).ToListAsync();
         }
     }
 }

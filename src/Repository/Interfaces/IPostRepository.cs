@@ -9,8 +9,6 @@ namespace PruebaCatedra3.src.Repository.Interfaces
     public interface IPostRepository
     {
         Task<IEnumerable<Post>> GetPosts();
-        Task<Post?> GetPost(int id);
-        Task<bool> CreatePost(Post post);
-        Task<bool> verifyPost(int id);
+        Task<Post> CreatePost(Post post);
     }
 }
