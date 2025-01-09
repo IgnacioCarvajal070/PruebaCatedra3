@@ -9,8 +9,8 @@ namespace PruebaCatedra3.src.Repository.Interfaces
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetUsers();
-        Task<User> GetUser(string email);
-        Task<User> CreateUser(User user);
+        Task<User?> GetUser(string email);
+        Task<bool> CreateUser(User user);
         Task<bool> verifyUser(string email);
     }
 }
