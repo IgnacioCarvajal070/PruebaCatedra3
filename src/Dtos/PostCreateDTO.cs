@@ -8,6 +8,6 @@ namespace PruebaCatedra3.src.Dtos
     public class PostCreateDTO
     {
         public string Title { get; set; } = string.Empty;
-        public string? ImageUrl { get; set; }
+        public string? ImageUrl { get; set; } 
     }
 }

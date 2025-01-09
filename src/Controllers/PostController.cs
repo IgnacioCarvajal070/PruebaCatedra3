@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PruebaCatedra3.src.CloudinaryImplementation;
 using PruebaCatedra3.src.Dtos;
 using PruebaCatedra3.src.Models;
 using PruebaCatedra3.src.Services.Interfaces;
@@ -17,12 +18,14 @@ namespace PruebaCatedra3.src.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostService _postService;
-        public PostController(IPostService postService)
+        private readonly ICloudinaryService _cloudinaryService;
+        public PostController(IPostService postService, ICloudinaryService cloudinaryService)
         {
             _postService = postService;
+            _cloudinaryService = cloudinaryService;
         }
         [HttpPost]
-        public async Task<ActionResult<Post>> CreatePost(PostCreateDTO post)
+        public async Task<ActionResult<Post>> CreatePost([FromForm]PostCreateDTO post, IFormFile image)
         {
             try
             {
@@ -31,6 +34,12 @@ namespace PruebaCatedra3.src.Controllers
                 {
                     return Unauthorized();
                 }
+                if (image == null || image.Length == 0)
+                {
+                    return BadRequest(new {message = "Imagen requerida"});
+                }
+                var imageUrl = await _cloudinaryService.UploadImageAsync(image);
+                post.ImageUrl = imageUrl;
                 var newPost = await _postService.CreatePost(post, userId);
                 return Ok(newPost);
             }
