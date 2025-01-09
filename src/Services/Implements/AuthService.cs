@@ -69,6 +69,9 @@ namespace PruebaCatedra3.src.Services.Implements
             if (_userRepository.verifyUser(userRegisterDTO.Email).Result){
                 throw new Exception("El email ya esta en uso");
             }
+            if (userRegisterDTO.Password != userRegisterDTO.ConfirmPassword){
+                throw new Exception("Las contraseñas no coinciden");
+            }
             var user = new User{
                 Email = userRegisterDTO.Email,
                 Name = userRegisterDTO.Name,
