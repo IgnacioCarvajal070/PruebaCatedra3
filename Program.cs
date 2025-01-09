@@ -66,7 +66,14 @@ builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,7 +82,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowLocalhost");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
