@@ -8,6 +8,9 @@ using Microsoft.Extensions.Options;
 
 namespace PruebaCatedra3.src.CloudinaryImplementation
 {
+    /// <summary>
+    /// Implementacion de la interfaz ICloudinaryService
+    /// </summary>
     public class CloudinaryService : ICloudinaryService
     {
         private readonly Cloudinary _cloudinary;
