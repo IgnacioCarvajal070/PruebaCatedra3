@@ -10,7 +10,7 @@ namespace PruebaCatedra3.src.Models
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
-        public DateOnly date { get; set; }
+        public DateTime date { get; set; }
         public string? ImageUrl { get; set; }
         public string UserId { get; set; } = string.Empty;
         public User User { get; set; } = null!;

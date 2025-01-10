@@ -25,7 +25,7 @@ namespace PruebaCatedra3.src.Services.Implements
             {
                 Title = postDTO.Title,
                 ImageUrl = postDTO.ImageUrl,
-                date = DateOnly.FromDateTime(DateTime.Now),
+                date = DateTime.Now,
                 UserId = userId
             };
                 var postCreate = await _postRepository.CreatePost(post);

@@ -8,7 +8,7 @@ namespace PruebaCatedra3.src.Dtos
     public class PostDTO
     {
         public string Title { get; set; } = string.Empty;
-        public DateOnly date { get; set; }
+        public DateTime date { get; set; }
         public string? ImageUrl { get; set; }
         public string UserName { get; set; } = string.Empty;
     }
